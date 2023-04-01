@@ -12,3 +12,12 @@ The list below shows all the tools I have used.
 + Python (for using background subtraction to capture images and store on store)
 
 # Demo
+This image shows the webpage for setting restricted hours. 
+![The page for setting restricted time span](/images/settime.PNG)
+
+This image shows the real time monitor process. The down left live stream under "SAFE" is me sitting in front of the ESP32 camera. At first, it shows "SAFE" because nobody passes by (I was not moving).
+![nobody passes by](result_safe/images/.PNG)
+
+Then, the word transformed from "SAFE" to "Someone has ...", as someone passes by during restricted hours (I started to move).
+![somebody passes by](result_warn/images/.PNG)
+
