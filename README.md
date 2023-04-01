@@ -1,4 +1,4 @@
-# IoTProject
+# IoTSecurity
 This is the project I am currently working on (2023). It is about building an indoor security system using ESP32 and a few programming languages. 
 
 # Goals
