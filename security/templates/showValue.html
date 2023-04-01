@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        table, th, td {
+          border:1px solid black;
+        }
+        .firstrow{
+            display: inline-block;
+            vertical-align: top;
+        }
+        #mytable{
+            max-height: 5px;
+        }
+
+
+
+    </style>
+</head>
+<body>
+        <div class = 'firstrow'>
+            <p><font size = '5' id='showcurtime'>No time</font></p>
+            <p><font size = '5' id="showtime">No time</font></p>
+            <p><font size='5' id='showvalue'>No value</font></p>
+            <p><font size = 7' id='showalert'>No message</font></p>
+            <img src="{{ url_for('video') }}" width="100%">
+        </div>
+        <div class = 'firstrow'>
+            <table id = 'mytable'>
+                <thead>
+                    <tr>
+                        <th colspan = '5'>Violation Time</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>ID</td>
+                        <td>Time</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+</body>
+<script>
+    function printtimespan(){
+        if(startend['start'] < startend['end'])
+            document.getElementById('showtime').innerHTML = 'The restricted hours you set is from ' + startend['start'] + ' to ' + startend['end'];
+        else
+            document.getElementById('showtime').innerHTML = 'The restricted hours you set is from ' + startend['start'] + ' today to ' + startend['end'] + ' tomorrow';
+    }
+    function printcurrenttime(){
+        var now = new Date();
+        var hour = now.getHours();
+        var min = now.getMinutes();
+        if(hour>=10)
+            hour = hour.toString();
+        else
+            hour = '0' + hour.toString();
+        if(min>=10)
+            min = min.toString();
+        else
+            min = '0' + min.toString();
+
+        now = hour + ':' + min;
+        document.getElementById('showcurtime').innerHTML = 'Current time is: ' + now;
+        return now;
+    }
+    function askdata()
+    {
+        
+        var now = printcurrenttime();
+        var dataUrl= 'http://iottalk.ncku.edu.tw/mytest/Dummy_Control';
+        var xhr = new XMLHttpRequest();
+        xhr.open('GET',dataUrl, true);
+        xhr.send();
+        xhr.onload = function(){
+        if(xhr.status = 200 && xhr.readyState == 4){
+            var data = JSON.parse(xhr.responseText);
+            var value = data['samples'][0][1][0];
+            if(value == 0)
+            {
+                state = 0;
+                document.getElementById('showvalue').innerHTML = 'Nobody is passing through the gate';
+                printalert(0);           
+            }
+            else
+            {
+                document.getElementById('showvalue').innerHTML = 'Somebody is passing through the gate';
+                if(now >= startend['start'] && now < startend['end'] && state == 0) //within restricted hours
+                {
+                    state = 1;
+                    printalert(1);
+                    addtable(now);
+                }
+                else if(startend['end']<=startend['start']) //within restricted hours, to the next day
+                {
+                    if(state == 0 && (now >= startend['start'] || now < startend['end']) )
+                    {
+                        state = 1;
+                        printalert(1);
+                        addtable(now);
+                    }
+                }
+                else //not within
+                {
+                    printalert(2);
+                }                  
+            }
+                
+        }
+        else{
+            document.getElementById('showvalue').innerHTML = 'No Value';
+        }
+
+
+        }
+    }
+    function printalert(yesno)
+    {
+        if (yesno == 0)
+        {
+            document.getElementById('showalert').innerHTML = 'SAFE';
+            document.getElementById('showalert').style.color = 'green'; 
+        }
+        else if(yesno == 1)
+        {
+            document.getElementById('showalert').innerHTML = 'SOMEONE HAS PASSED <br> THROUGH THE GATE <br> DURING RESTRIECTED <br> HOURS!!!';
+            document.getElementById('showalert').style.color = 'red';    
+        }
+        else{
+            document.getElementById('showalert').innerHTML = 'SAFE, not within restricted hours';
+            document.getElementById('showalert').style.color = 'green'; 
+        }
+
+    } 
+    function addtable(now){
+        
+        var table = document.getElementById('mytable');
+        var rows = table.rows.length;
+        var lastrow = table.insertRow(rows);
+        var id = lastrow.insertCell(0);
+        var time = lastrow.insertCell(1);
+        id.innerHTML = rows-1;
+        time.innerHTML = now;
+
+    }
+    var state = 0; //add violation record if state changes
+    var startend = JSON.parse(sessionStorage.getItem('startend'));
+    printtimespan();
+    setInterval(function(){askdata();}, 1000);
+    
+    
+    
+    
+</script>
+</html>

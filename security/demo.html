@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script>
+        function askdata()
+        {
+            var dataUrl= 'http://iottalk.ncku.edu.tw//mytest//Dummy_Control';
+            var xhr = new XMLHttpRequest();
+            xhr.open('GET',dataUrl, true);
+            xhr.send();
+            xhr.onload = function(){
+            if(xhr.status = 200 && xhr.readyState == 4){
+                var data = JSON.parse(xhr.responseText);
+                var value = data['samples'][0][1][0];
+                document.getElementById('showvalue').innerHTML = value;
+            }
+            else{
+                document.getElementById('showvalue').innerHTML = 'No Value';
+            }
+
+            }
+        }
+        setInterval(function(){askdata();}, 200);
+        
+        
+        
+        
+    </script>
+</head>
+<body>
+    <div id='showvalue'>
+        No value
+    </div>
+</body>
+</html>
