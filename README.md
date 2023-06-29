@@ -3,26 +3,26 @@ This is the project I am currently working on (2023). It is about building an in
 
 # Goals
 This system aims to identify intruders within restricted hours and take picutres automatically. I use infrared sensor to see if anyone enters the  
-restriced area, and use background subtraction to see if there is any moving object.
+restriced area, and use suzuki contour algorithm to see if there is any moving object.
 
 # Tools
 The list below shows all the tools I have used.
 + C++ (for the code on ESP32)
 + JavaScript (for sending request to the server by ajax and for display the result on my webpage)
 + Python (for using background subtraction to capture images and store on store)
++ HTML
++ CSS
 
 # Demo
-This image shows the webpage for setting restricted hours. 
-![The page for setting restricted time span](/images/settime.PNG)
 
-This image shows the real-time monitor process. The down left live stream under "SAFE" is me sitting in front of the ESP32 camera. At first, it shows "SAFE" because nobody passes by (I was not moving).
-![nobody passes by](/images/result_safe.PNG)
 
-Then, the word transformed from "SAFE" to "Someone has ...", as someone passes by during restricted hours (I started to move). All the violation records are listed on the right side.
-![somebody passes by](/images/result_warn.PNG)
+This video shows the real-time motion detection. The frame with red rectangle is captured and stored into the database 
+for future investigation.
+https://github.com/Rob12312368/IoTSecurity/assets/56261402/3c06d05e-097a-45a8-b9b6-f80e09c1afee
 
-This last image shows all the jpg files the program captures during restricted hours using background subtraction. The red square is the moving object.
-![moving object](/images/captures.PNG)
+The second video contains all the other function of this program, including setting the restricted time for detection, searching
+and deleting pictures within specific time range, and showing different messages when detection is triggered within or not within restricted hours.
+https://github.com/Rob12312368/IoTSecurity/assets/56261402/26973342-61ed-4349-8732-354d26378021
 
-# What am I working on right now?
-This service can only be accessed by users in the same local network, and I try to make everyone who know the address to get access to it. In that way, I can monitor the situation wherever I go.
+
+
