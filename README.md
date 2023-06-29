@@ -18,11 +18,19 @@ The list below shows all the tools I have used.
 
 This video shows the real-time motion detection. The frame with red rectangle is captured and stored into the database 
 for future investigation.
-https://github.com/Rob12312368/IoTSecurity/assets/56261402/3c06d05e-097a-45a8-b9b6-f80e09c1afee
+
+
+https://github.com/Rob12312368/IoTSecurity/assets/56261402/d6589ec6-6cef-4e54-8c0b-bd57a36c9ad2
+
+
 
 The second video contains all the other function of this program, including setting the restricted time for detection, searching
 and deleting pictures within specific time range, and showing different messages when detection is triggered within or not within restricted hours.
-https://github.com/Rob12312368/IoTSecurity/assets/56261402/26973342-61ed-4349-8732-354d26378021
+
+
+
+
+https://github.com/Rob12312368/IoTSecurity/assets/56261402/a90e2c72-1a9a-4544-b380-e57505ef1c9e
 
 
 
